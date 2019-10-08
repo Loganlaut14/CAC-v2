@@ -17,11 +17,12 @@ public class FrostEffect : MonoBehaviour
 	private Material material;
 
 	private void Awake()
-	{
+      	{
         material = new Material(Shader);
         material.SetTexture("_BlendTex", Frost);
         material.SetTexture("_BumpMap", FrostNormals);
-	}
+        
+    }
 	
 	private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
@@ -30,6 +31,7 @@ public class FrostEffect : MonoBehaviour
             material.SetTexture("_BlendTex", Frost);
             material.SetTexture("_BumpMap", FrostNormals);
             EdgeSharpness = Mathf.Max(1, EdgeSharpness);
+            
         }
         material.SetFloat("_BlendAmount", Mathf.Clamp01(Mathf.Clamp01(FrostAmount) * (maxFrost - minFrost) + minFrost));
         material.SetFloat("_EdgeSharpness", EdgeSharpness);
