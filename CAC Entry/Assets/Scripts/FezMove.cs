@@ -52,7 +52,6 @@ public class FezMove : MonoBehaviour
 
         if (anim)
         {
-            anim.SetInteger("Horizontal", Horizontal);
 
             float moveFactor = MovementSpeed * Time.deltaTime * 10f;
             MoveCharacter(moveFactor);
