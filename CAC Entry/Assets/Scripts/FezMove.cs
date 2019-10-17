@@ -16,6 +16,7 @@ public class FezMove : MonoBehaviour
     public float JumpHeight = 0f;
     public bool _jumping = false;
     private float degree = 0;
+    [SerializeField] private AnimationCurve jumpFallOff;
 
     private void Start()
     {
@@ -46,7 +47,7 @@ public class FezMove : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !_jumping && Grounded())
         {
             _jumping = true;
-            StartCoroutine(JumpingWait());
+            StartCoroutine(JumpEvent());
         }
 
         if (anim)
@@ -65,7 +66,6 @@ public class FezMove : MonoBehaviour
     private void MoveCharacter(float moveFactor)
     {
         Vector3 trans = Vector3.zero;
-        Debug.Log("Please: " +oldY  + " " + transform.position.y);
         if (oldY > transform.position.y)
         {
             Gravity = startGravity * 20.5f;
@@ -91,6 +91,9 @@ public class FezMove : MonoBehaviour
         {
             trans = new Vector3(0f, -Gravity * moveFactor, -Horizontal * moveFactor);
         }
+
+        // Old jumping script \/
+
         if (_jumping)
         {
             if (!Input.GetButton("Jump"))
@@ -98,7 +101,7 @@ public class FezMove : MonoBehaviour
                 _jumping = false;
                 goto Skip;
             }
-            transform.Translate(Vector3.up * JumpHeight * Time.deltaTime);
+            //transform.Translate(Vector3.up * JumpHeight * Time.deltaTine);
         }
 
         Skip:
@@ -112,18 +115,28 @@ public class FezMove : MonoBehaviour
 
     }
 
-    public IEnumerator JumpingWait()
+    public IEnumerator JumpEvent()
     {
-        yield return new WaitForSeconds(0.35f);
-        //Debug.Log ("Returned jump to false");
+        float timeInAir = 0.0f;
+
+        do
+        {
+            float jumpForce = jumpFallOff.Evaluate(timeInAir);
+            Debug.Log("Here");
+            charController.Move(Vector3.up * jumpForce * JumpHeight * Time.deltaTime);
+            timeInAir += Time.deltaTime;
+            yield return null;
+
+        } while (!charController.isGrounded && Input.GetButton("Jump"));
+
         _jumping = false;
     }
     public bool Grounded()
     {
-        Debug.Log("foo");
         RaycastHit hit;
         if (Physics.Raycast(transform.position, -transform.up, out hit, 1.0f))
         {
+            Debug.Log("Grounded");
             return true;
         }
         return false;
