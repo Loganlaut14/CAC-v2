@@ -21,22 +21,22 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        time: 0.11666667
+        value: -0.029975891
+        inSlope: 0.40978023
+        outSlope: 0.40978023
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.11077215
       - serializedVersion: 3
-        time: 20.05
-        value: 6
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        time: 15.216666
+        value: 8.411652
+        inSlope: 0.018368037
+        outSlope: 0.018368037
+        tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0.11317942
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -66,7 +66,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 20.05
+    m_StopTime: 15.216666
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -86,22 +86,22 @@ AnimationClip:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        time: 0.11666667
+        value: -0.029975891
+        inSlope: 0.40978023
+        outSlope: 0.40978023
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.11077215
       - serializedVersion: 3
-        time: 20.05
-        value: 6
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        time: 15.216666
+        value: 8.411652
+        inSlope: 0.018368037
+        outSlope: 0.018368037
+        tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
+        inWeight: 0.11317942
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
