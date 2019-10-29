@@ -9,11 +9,21 @@ public class FezMove : MonoBehaviour
     public Animator anim;
     public float MovementSpeed = 5f;
     public float Gravity = 1f;
+    float startGravity;
+    float oldY;
     public CharacterController charController;
     private FacingDirection _myFacingDirection;
     public float JumpHeight = 0f;
     public bool _jumping = false;
     private float degree = 0;
+    public Vector3 moveDir = Vector3.zero;
+    public AnimationCurve jumpCurve;
+    float jumpTimer = 0;
+    private void Start()
+    {
+        startGravity = Gravity;
+        oldY = transform.position.y;
+    }
 
     public FacingDirection CmdFacingDirection
     {
@@ -36,7 +46,7 @@ public class FezMove : MonoBehaviour
         else
             Horizontal = 0;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !_jumping)
+        if (Input.GetKeyDown(KeyCode.Space) && Grounded())
         {
             _jumping = true;
             StartCoroutine(JumpingWait());
@@ -58,6 +68,16 @@ public class FezMove : MonoBehaviour
     private void MoveCharacter(float moveFactor)
     {
         Vector3 trans = Vector3.zero;
+        Debug.Log("Please: " + oldY + " " + transform.position.y);
+        if (oldY > transform.position.y)
+        {
+            Gravity = startGravity * 5.5f;
+        }
+        else
+        {
+            Gravity = startGravity;
+        }
+        oldY = transform.position.y;
         if (_myFacingDirection == FacingDirection.Front)
         {
             trans = new Vector3(Horizontal * moveFactor, -Gravity * moveFactor, 0f);
@@ -77,10 +97,25 @@ public class FezMove : MonoBehaviour
 
         if (_jumping)
         {
-            transform.Translate(Vector3.up * JumpHeight * Time.deltaTime);
+            jumpTimer += Time.deltaTime;
+            if (!Input.GetButton("Jump"))
+            {
+                _jumping = false;
+                goto Skip;
+            }
+            trans.y = JumpHeight * jumpCurve.Evaluate(jumpTimer);
+
         }
 
-        charController.SimpleMove(trans);
+        moveDir.x = trans.x;
+        moveDir.z = trans.z;
+        moveDir.y = trans.y;
+        moveDir.y -= Gravity * Time.deltaTime;
+
+
+        Skip:
+        Debug.Log("");
+        charController.Move(moveDir * Time.deltaTime);
     }
     public void UpdateToFacingDirection(FacingDirection newDirection, float angle)
     {
@@ -95,5 +130,15 @@ public class FezMove : MonoBehaviour
         yield return new WaitForSeconds(0.35f);
         Debug.Log("Returned jump to false");
         _jumping = false;
+    }
+    public bool Grounded()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -transform.up, out hit, 1.0f))
+        {
+            jumpTimer = 0;
+            return true;
+        }
+        return false;
     }
 }
